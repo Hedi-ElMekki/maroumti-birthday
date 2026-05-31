@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To Someone Who Defies Gravity... Happy Birthday! ✨</title>
+  <meta name="description" content="A magical, interactive zero-gravity birthday card featuring floating polaroids, weightless notes, a hidden letter capsule, and a gravity switch collage.">
+  
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Tailwind Config Customization -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cosmic: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              500: '#8b5cf6',
+              900: '#1e1b4b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="select-none">
+  
+  <!-- Canvas backgrounds -->
+  <canvas id="bg-canvas"></canvas>
+  <canvas id="confetti-canvas"></canvas>
+  
+  <!-- Background Audio -->
+  <audio id="bg-music" loop src="https://assets.mixkit.co/music/preview/mixkit-dreaming-big-31.mp3"></audio>
+
+  <!-- Main Container -->
+  <div id="app-container" class="relative w-full h-screen overflow-hidden flex flex-col justify-between p-4 sm:p-6 md:p-8">
+    
+    <!-- Hero Header (Absolute/Z-Index Layer) -->
+    <header class="hero-container w-full text-center mt-6 sm:mt-12 absolute left-0 right-0 top-0 select-none">
+      <p id="hero-sub" class="text-purple-300 text-xs sm:text-sm uppercase tracking-[0.25em] font-light mb-2 opacity-0">To Someone Who Defies Gravity...</p>
+      <h1 id="hero-title" class="hero-title text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-200 via-pink-100 to-amber-200 opacity-0">
+        Happy Birthday, Maroumti! ❤️
+      </h1>
+      <p id="hero-hint" class="text-slate-400 text-[10px] sm:text-xs mt-3 opacity-0 transition-opacity duration-500">
+        Hover to feel weightless. Click and drag elements to fling.
+      </p>
+    </header>
+
+    <!-- Floating Physics Elements Layer (Matter.js maps positions to these elements) -->
+    <div id="physics-container" class="absolute inset-0 w-full h-full pointer-events-none z-20">
+      
+      <!-- Polaroid Card 1 -->
+      <div id="card-1" class="physics-wrapper polaroid-wrapper pointer-events-auto">
+        <div class="hover-target polaroid">
+          <div class="polaroid-img-container">
+            <img src="./pics/_96A1274.jpeg" alt="Cosmic Nebula">
+          </div>
+          <div class="polaroid-caption">You are my universe</div>
+        </div>
+      </div>
+
+      <!-- Polaroid Card 2 -->
+      <div id="card-2" class="physics-wrapper polaroid-wrapper pointer-events-auto">
+        <div class="hover-target polaroid">
+          <div class="polaroid-img-container">
+            <img src="./pics/d3aa23b7-8c26-40ff-9eba-163e7c01a753.jpeg" alt="Clouds floating">
+          </div>
+          <div class="polaroid-caption">Lifting me up</div>
+        </div>
+      </div>
+
+      <!-- Polaroid Card 3 -->
+      <div id="card-3" class="physics-wrapper polaroid-wrapper pointer-events-auto">
+        <div class="hover-target polaroid">
+          <div class="polaroid-img-container">
+            <img src="./pics/dd9c765c-feb9-4802-8c01-6e988602b4e2.jpeg" alt="Sparkler glow">
+          </div>
+          <div class="polaroid-caption">Sparking joy</div>
+        </div>
+      </div>
+
+      <!-- Polaroid Card 4 -->
+      <div id="card-4" class="physics-wrapper polaroid-wrapper pointer-events-auto">
+        <div class="hover-target polaroid">
+          <div class="polaroid-img-container">
+            <img src="./pics/eiffel.jpg" alt="Sunset horizon">
+          </div>
+          <div class="polaroid-caption">Infinite moments</div>
+        </div>
+      </div>
+
+      <!-- Sticky Note 1 -->
+      <div id="note-1" class="physics-wrapper pointer-events-auto">
+        <div class="hover-target sticky-note sticky-note-yellow">
+          Every single day, you make my world a little lighter. 
+        </div>
+      </div>
+
+      <!-- Sticky Note 2 -->
+      <div id="note-2" class="physics-wrapper pointer-events-auto">
+        <div class="hover-target sticky-note sticky-note-pink">
+          Thank you for defying gravity and being my anchor. 
+        </div>
+      </div>
+
+      <!-- Sticky Note 3 -->
+      <div id="note-3" class="physics-wrapper pointer-events-auto">
+        <div class="hover-target sticky-note sticky-note-blue">
+          To the moon and back, always and forever. 
+        </div>
+      </div>
+
+      <!-- Message Capsule (Glowing Heart/Envelope) -->
+      <div id="capsule" class="physics-wrapper message-capsule-wrapper pointer-events-auto">
+        <div class="hover-target message-capsule relative">
+          <div class="message-capsule-pulse"></div>
+          <i class="fa-solid fa-envelope-open-text text-3xl"></i>
+        </div>
+      </div>
+
+      <!-- Floating Sparkle SVG 1 -->
+      <div id="svg-star-1" class="physics-wrapper pointer-events-auto text-amber-300 floating-svg">
+        <svg class="w-12 h-12 pulse-glow" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0l3 9 9 3-9 3-3 9-3-9-9-3 9-3z"/>
+        </svg>
+      </div>
+
+      <!-- Floating Sparkle SVG 2 -->
+      <div id="svg-star-2" class="physics-wrapper pointer-events-auto text-cyan-300 floating-svg">
+        <svg class="w-8 h-8 pulse-glow" viewBox="0 0 24 24" fill="currentColor" style="animation-delay: 1.5s;">
+          <path d="M12 0l3 9 9 3-9 3-3 9-3-9-9-3 9-3z"/>
+        </svg>
+      </div>
+
+      <!-- Floating Heart SVG 1 -->
+      <div id="svg-heart-1" class="physics-wrapper pointer-events-auto text-pink-500 floating-svg">
+        <svg class="w-10 h-10 pulse-glow" viewBox="0 0 24 24" fill="currentColor" style="animation-delay: 0.7s;">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </div>
+
+      <!-- Floating Heart SVG 2 -->
+      <div id="svg-heart-2" class="physics-wrapper pointer-events-auto text-purple-400 floating-svg">
+        <svg class="w-8 h-8 pulse-glow" viewBox="0 0 24 24" fill="currentColor" style="animation-delay: 2.2s;">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </div>
+
+    </div>
+
+    <!-- Bottom Controls Dock (Z-Index Layer) -->
+    <footer class="w-full flex justify-center pb-4 sm:pb-8 absolute left-0 right-0 bottom-0 pointer-events-none z-30">
+      <div class="glass-panel py-3 px-6 sm:py-4 sm:px-8 rounded-full flex items-center justify-between gap-6 pointer-events-auto max-w-[90%] sm:max-w-md shadow-2xl">
+        
+        <!-- Gravity Toggle -->
+        <div class="flex items-center gap-3">
+          <span class="text-xs sm:text-sm font-semibold tracking-wider text-purple-200">Antigravity</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="gravity-toggle">
+            <span class="slider"></span>
+          </label>
+          <span class="text-xs sm:text-sm font-semibold tracking-wider text-slate-400" id="gravity-toggle-label">Gravity</span>
+        </div>
+
+        <div class="w-px h-6 bg-white/10"></div>
+
+        <!-- Utility Actions -->
+        <div class="flex items-center gap-4">
+          <!-- Reset button -->
+          <button id="reset-btn" class="text-slate-400 hover:text-white transition-colors duration-200 focus:outline-none w-8 h-8 rounded-full hover:bg-white/5 flex items-center justify-center text-sm" title="Scatter Elements">
+            <i class="fa-solid fa-arrows-rotate"></i>
+          </button>
+          
+          <!-- Music button -->
+          <button id="music-btn" class="text-slate-400 hover:text-white transition-colors duration-200 focus:outline-none w-8 h-8 rounded-full hover:bg-white/5 flex items-center justify-center text-sm" title="Toggle Music">
+            <i class="fa-solid fa-volume-xmark"></i>
+          </button>
+        </div>
+        
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Message Capsule Letter Modal Overlay -->
+  <div id="letter-modal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="letter-paper">
+        <!-- Close Button inside the letter paper -->
+        <button id="close-modal" class="absolute top-4 right-4 text-slate-500 hover:text-red-700 transition-colors duration-200 text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200/50" title="Close Letter">
+          <i class="fa-solid fa-times"></i>
+        </button>
+        
+        <div class="letter-content font-light text-slate-800">
+          <p>Dear Maroumti,</p>
+          <p>
+            They say that gravity is the invisible force that pulls everything in the cosmos together, keeping the planets in their orbits and our feet on the ground.
+          </p>
+          <p>
+            But you? You completely defy that rule.
+          </p>
+          <p>
+            Whenever life feels heavy, just thinking of you lifts my world into a place where only light, warmth, and pure joy exist. You make everything feel completely weightless, filling my days with starry magic and infinite possibilities.
+          </p>
+          <p>
+            Thank you for being the beautiful magic that elevates my everyday, for sharing your laughter and for being the wonderful soul that you are.
+          </p>
+          <p>
+            On your birthday, my wish is for you to float far above all worries, drift through clouds of endless happiness and always remember how deeply cherished you are.
+          </p>
+          <p class="letter-signature">
+            With all my love and beyound, <br>
+            <span class="italic font-bold">Hadhoudek</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Matter.js Physics Engine -->
+  <script src="https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js"></script>
+  
+  <!-- GSAP Animation Library -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
